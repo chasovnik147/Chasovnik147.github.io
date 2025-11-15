@@ -1,0 +1,337 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ЧАСОВНИК</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            font-family: 'Arial', sans-serif;
+            background: #000000;
+            color: #ffffff;
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 20px;
+            background: 
+                radial-gradient(circle at 20% 80%, rgba(0, 87, 183, 0.4) 0%, transparent 50%),
+                radial-gradient(circle at 80% 20%, rgba(255, 215, 0, 0.4) 0%, transparent 50%),
+                radial-gradient(circle at 40% 40%, rgba(255, 255, 255, 0.3) 0%, transparent 50%),
+                linear-gradient(45deg, #000000, #1a1a2e, #16213e);
+            animation: gradientShift 8s ease infinite;
+            background-size: 400% 400%;
+        }
+        
+        @keyframes gradientShift {
+            0% { background-position: 0% 50%; }
+            50% { background-position: 100% 50%; }
+            100% { background-position: 0% 50%; }
+        }
+        
+        .container {
+            max-width: 500px;
+            width: 100%;
+            text-align: center;
+        }
+        
+        .dark-card {
+            background: rgba(10, 10, 10, 0.9);
+            backdrop-filter: blur(20px);
+            padding: 40px 30px;
+            border-radius: 15px;
+            border: 1px solid rgba(0, 87, 183, 0.3);
+            box-shadow: 
+                0 0 50px rgba(0, 87, 183, 0.3),
+                0 0 100px rgba(255, 215, 0, 0.2);
+            position: relative;
+            overflow: hidden;
+        }
+        
+        .dark-card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 2px;
+            background: linear-gradient(90deg, #0057b7, #ffd700, #ffffff);
+        }
+        
+        .name-title {
+            font-size: 3em;
+            font-weight: bold;
+            color: #ffd700;
+            margin: 10px 0 30px 0;
+            text-shadow: 0 0 20px rgba(255, 215, 0, 0.7);
+            letter-spacing: 3px;
+            text-transform: uppercase;
+        }
+        
+        .telegram-btn {
+            background: linear-gradient(45deg, #0057b7, #ffd700);
+            color: white;
+            border: none;
+            padding: 15px 30px;
+            margin: 10px 0;
+            border-radius: 25px;
+            font-size: 1.1em;
+            font-weight: bold;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            text-decoration: none;
+            display: inline-block;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            width: 100%;
+        }
+        
+        .telegram-btn:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 5px 20px rgba(0, 87, 183, 0.5);
+        }
+        
+        .adapter-btn {
+            background: transparent;
+            color: #ffd700;
+            border: 2px solid #0057b7;
+            padding: 12px 25px;
+            margin: 10px 0;
+            border-radius: 25px;
+            font-size: 1em;
+            font-weight: bold;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            width: 100%;
+        }
+        
+        .adapter-btn:hover {
+            background: rgba(0, 87, 183, 0.2);
+            transform: translateY(-2px);
+        }
+        
+        .adapter-menu {
+            display: none;
+            margin-top: 15px;
+            background: rgba(255, 215, 0, 0.1);
+            border-radius: 10px;
+            border: 1px solid rgba(255, 215, 0, 0.3);
+            padding: 15px;
+        }
+        
+        .menu-btn {
+            background: rgba(0, 87, 183, 0.3);
+            color: #ffffff;
+            border: 1px solid rgba(0, 87, 183, 0.5);
+            padding: 12px 20px;
+            margin: 5px 0;
+            border-radius: 20px;
+            font-size: 0.9em;
+            font-weight: bold;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            text-decoration: none;
+            display: block;
+            text-align: center;
+        }
+        
+        .menu-btn:hover {
+            background: rgba(0, 87, 183, 0.5);
+            transform: translateY(-2px);
+        }
+        
+        .bio-btn {
+            background: transparent;
+            color: #ffd700;
+            border: 2px solid #0057b7;
+            padding: 12px 25px;
+            margin: 10px 0;
+            border-radius: 25px;
+            font-size: 1em;
+            font-weight: bold;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            width: 100%;
+        }
+        
+        .bio-btn:hover {
+            background: rgba(0, 87, 183, 0.2);
+            transform: translateY(-2px);
+        }
+        
+        .bio-content {
+            display: none;
+            margin-top: 20px;
+            padding: 20px;
+            background: rgba(255, 215, 0, 0.1);
+            border-radius: 10px;
+            border: 1px solid rgba(255, 215, 0, 0.3);
+        }
+        
+        .info-item {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 10px 0;
+            border-bottom: 1px solid rgba(0, 87, 183, 0.2);
+            font-size: 1.1em;
+        }
+        
+        .info-label {
+            color: #ffd700;
+            font-weight: bold;
+        }
+        
+        .info-value {
+            color: #ffffff;
+        }
+        
+        .friends-section {
+            margin: 25px 0;
+            text-align: left;
+        }
+        
+        .friends-title {
+            color: #0057b7;
+            font-size: 1.3em;
+            margin-bottom: 15px;
+            text-align: center;
+            font-weight: bold;
+        }
+        
+        .friend-link {
+            display: inline-block;
+            background: rgba(0, 87, 183, 0.2);
+            color: #ffd700;
+            padding: 8px 15px;
+            margin: 5px;
+            border-radius: 15px;
+            border: 1px solid rgba(0, 87, 183, 0.3);
+            text-decoration: none;
+            font-size: 0.9em;
+            transition: all 0.3s ease;
+        }
+        
+        .friend-link:hover {
+            background: rgba(0, 87, 183, 0.4);
+            transform: translateY(-2px);
+        }
+        
+        .pulse {
+            animation: pulse 3s infinite;
+        }
+        
+        @keyframes pulse {
+            0% { 
+                box-shadow: 0 0 30px rgba(0, 87, 183, 0.5),
+                          0 0 60px rgba(255, 215, 0, 0.3);
+            }
+            50% { 
+                box-shadow: 0 0 40px rgba(0, 87, 183, 0.7),
+                          0 0 80px rgba(255, 215, 0, 0.5);
+            }
+            100% { 
+                box-shadow: 0 0 30px rgba(0, 87, 183, 0.5),
+                          0 0 60px rgba(255, 215, 0, 0.3);
+            }
+        }
+        
+        @media (max-width: 480px) {
+            .dark-card {
+                padding: 30px 20px;
+            }
+            
+            .name-title {
+                font-size: 2.2em;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="dark-card pulse">
+            <div class="name-title">ЧАСОВНИК</div>
+            
+            <a href="https://t.me/aerwe" class="telegram-btn" target="_blank">СВЯЗЬ</a>
+            
+            <button class="adapter-btn" onclick="toggleAdapter()">АДАПТЕР</button>
+            
+            <div class="adapter-menu" id="adapterMenu">
+                <a href="http://oqsed.t.me/" class="menu-btn" target="_blank">БЛОГ</a>
+                <a href="https://t.me/pricechapel" class="menu-btn" target="_blank">PRICE</a>
+                <a href="https://t.me/replieschapel" class="menu-btn" target="_blank">REP</a>
+            </div>
+            
+            <button class="bio-btn" onclick="toggleBio()">БИОГРАФИЯ</button>
+            
+            <div class="bio-content" id="bioContent">
+                <div class="info-item">
+                    <span class="info-label">Имя:</span>
+                    <span class="info-value">Часовник</span>
+                </div>
+                
+                <div class="info-item">
+                    <span class="info-label">Возраст:</span>
+                    <span class="info-value">23</span>
+                </div>
+                
+                <div class="info-item">
+                    <span class="info-label">Страна:</span>
+                    <span class="info-value">🇷🇺 Россия</span>
+                </div>
+                
+                <div class="info-item">
+                    <span class="info-label">Религия:</span>
+                    <span class="info-value">Христианство</span>
+                </div>
+                
+                <div class="friends-section">
+                    <div class="friends-title">КОНТАКТЫ</div>
+                    <div style="text-align: center;">
+                        <a href="https://t.me/webjeremy" class="friend-link" target="_blank">webjeremy</a>
+                        <span class="friend-link">и другие</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        function toggleAdapter() {
+            const adapterMenu = document.getElementById('adapterMenu');
+            const adapterBtn = document.querySelector('.adapter-btn');
+            
+            if (adapterMenu.style.display === 'block') {
+                adapterMenu.style.display = 'none';
+                adapterBtn.textContent = 'АДАПТЕР';
+            } else {
+                adapterMenu.style.display = 'block';
+                adapterBtn.textContent = 'СКРЫТЬ';
+            }
+        }
+        
+        function toggleBio() {
+            const bioContent = document.getElementById('bioContent');
+            const bioBtn = document.querySelector('.bio-btn');
+            
+            if (bioContent.style.display === 'block') {
+                bioContent.style.display = 'none';
+                bioBtn.textContent = 'БИОГРАФИЯ';
+            } else {
+                bioContent.style.display = 'block';
+                bioBtn.textContent = 'СКРЫТЬ';
+            }
+        }
+    </script>
+</body>
+</html>
